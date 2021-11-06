@@ -22,7 +22,12 @@
 <div width='128'><img height='128' src='' id='slot5' name='slot5'></div>
 <div width='128'><img height='128' src='' id='slot6' name='slot6'></div>
 <div id='fordebug'></div>
-<input type='text' id='pkmn1'></input><button id='update1'>update</button></input><br>
+1. <input type='text' id='pkmn1'></input><button id='update1'>update</button></input><br>
+2. <input type='text' id='pkmn2'></input><button id='update2'>update</button></input><br>
+3. <input type='text' id='pkmn3'></input><button id='update3'>update</button></input><br>
+4. <input type='text' id='pkmn4'></input><button id='update4'>update</button></input><br>
+5. <input type='text' id='pkmn5'></input><button id='update5'>update</button></input><br>
+6. <input type='text' id='pkmn6'></input><button id='update6'>update</button></input><br>
 <script type = "text/javascript">
     
     function updateImages(data) {
@@ -72,19 +77,21 @@
     updateImages(data);
   });
     
-    function updatePokemon() {
-        var name = document.getElementById('pkmn1').value
-        console.log(name)
-        const postData = {
-            slot1: name
-        };
+    function updatePokemon(evt) {
+        var i = evt.currentTarget.myParam;
+        var name = document.getElementById('pkmn'+i).value
         const db = getDatabase();
         const updates = {};
-        updates['/pokemon/slot1'] = name;
+        updates['/pokemon/slot'+i] = name;
         return update(ref(db), updates);
     }
     
-    document.getElementById("update1").addEventListener("click", updatePokemon);
+    for (var i = 1;i < 7;i++) {
+        const elem = document.getElementById("update"+i);
+        elem.addEventListener("click",updatePokemon,false);
+        elem.myParam = i;
+    }
+    
 </script>
 </body>
 </html>
