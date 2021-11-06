@@ -7,11 +7,37 @@
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="2113">
   <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 17.0px Courier; color: #e5e75c; -webkit-text-stroke: #e5e75c; background-color: #232323}
-    span.s1 {font-kerning: none}
   </style>
 </head>
 <body>
-<p class="p1"><span class="s1">Test Test Test</span></p>
+<div width='128'><img src='' id='slot1' name='slot1'></div>
+<div width='128'><img src='' id='slot2' name='slot2'></div>
+<div width='128'><img src='' id='slot3' name='slot3'></div>
+<div width='128'><img src='' id='slot4' name='slot4'></div>
+<div width='128'><img src='' id='slot5' name='slot5'></div>
+<div width='128'><img src='' id='slot6' name='slot6'></div>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDQgEJzNZ48gpqzlzmPjm8IFaUVF8OxbIg",
+    authDomain: "pokemon-overlay.firebaseapp.com",
+    projectId: "pokemon-overlay",
+    storageBucket: "pokemon-overlay.appspot.com",
+    messagingSenderId: "717576650750",
+    appId: "1:717576650750:web:f4795a90336f1e5e004aaf",
+    measurementId: "G-N56N498XJL"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
