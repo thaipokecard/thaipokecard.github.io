@@ -7,6 +7,11 @@
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="2113">
   <style type="text/css">
+      body {
+          padding: 0px;
+          margin: 0px;
+          line-height: 0;
+      }
   </style>
 </head>
 <body>
@@ -16,6 +21,20 @@
 <div width='128'><img src='https://img.pokemondb.net/sprites/home/normal/bulbasaur.png' id='slot4' name='slot4'></div>
 <div width='128'><img src='https://img.pokemondb.net/sprites/home/normal/bulbasaur.png' id='slot5' name='slot5'></div>
 <div width='128'><img src='https://img.pokemondb.net/sprites/home/normal/bulbasaur.png' id='slot6' name='slot6'></div>
+<script type = "text/javascript">
+    var image = document.getElementById("slot1");
+    var currentPos = 0;
+    var images = ["https://img.pokemondb.net/sprites/home/normal/bulbasaur.png", "https://img.pokemondb.net/sprites/home/normal/venusaur.png"]
+
+    function volgendefoto() {
+        if (++currentPos >= images.length)
+            currentPos = 0;
+
+        image.src = images[currentPos];
+    }
+
+    setInterval(volgendefoto, 10000);
+</script>
 <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js";
