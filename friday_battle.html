@@ -126,7 +126,7 @@ Mew <input type='text' id='mew'></input><button id='mewmew'>add</button></input>
         var name = document.getElementById('mew').value;
         const db = getDatabase();
         const mewListRef = ref(db,'pokemon/mew')
-        return update(mewListRef, { [jaeCount]: name});
+        return update(mewListRef, { [mewCount]: name});
     }
     
     const elem2 = document.getElementById("mewmew");
