@@ -17,9 +17,11 @@
 <body>
 <table border=0 cellpadding=0 cellspacing=0>
     <tr>
-        <td id='jaeroster' width='128' height='768' valign='top'>
+        <td id='jaeroster' width='768' height='128' valign='top'>
         </td>
-        <td id='mewroster' width='128' height='768' valign='top'>
+    </tr>
+    <tr>
+        <td id='mewroster' width='768' height='128' valign='top'>
         </td>
     </tr>
 </table>
@@ -35,6 +37,8 @@ Mew <input type='text' id='mew'></input><button id='mewmew'>add</button></input>
         var images = '';
         if (data.length <= 7) {
             s = 128;
+        } else if (data.length <= 13) {
+            s = 768/(data.length-1);
         } else {
             s = 64;
         }
@@ -54,6 +58,8 @@ Mew <input type='text' id='mew'></input><button id='mewmew'>add</button></input>
         var images = '';
         if (data.length <= 7) {
             s = 128;
+        } else if (data.length <= 13) {
+            s = 768/(data.length-1);
         } else {
             s = 64;
         }
