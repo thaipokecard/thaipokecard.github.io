@@ -27,20 +27,34 @@
           max-width: 128px;
           display: inline-block;
       }
+      .rel {
+          display: inline;
+          position: relative;
+          top:0;
+          left:0;
+      }
+      .ab1 {
+          position: absolute;
+          left:0;
+          bottom:0;
+      }
+
   </style>
 </head>
 <body>
 <table border=0 cellpadding=0 cellspacing=0>
     <tr>
-        <td id='jaeslot' height=128></td>
+        <td height=128 id='jaeslot'></td>
     </tr>
     <tr>
         <td id='nameslot' height=32></td>
     </tr>
     <tr>
-        <td id='mewslot' height=128></td>
+        <td id='mewslot' class='rel' height=128></td>
     </tr>
 </table>
+
+<div>
 
 <p>Jae - Name - Mew (in order)</p>
 1. <input type='text' id='pkmn1j'></input><input type='text' id='pkmn1n'></input><input type='text' id='pkmn1m'></input><button id='update1'>update</button></input><br>
@@ -58,14 +72,25 @@
         console.log(data);
         for(var i = 1;i<7;i++) {
             if ("slot"+i in data && data["slot" + i]["name"] != "") {
-                jslot += "<img src='https://img.pokemondb.net/sprites/diamond-pearl/normal/" + data["slot"+i]["jae"] + ".png' width=128>";
-                if (data["slot"+i]["name"].length <= 9) {
+                jslot += "<div class='rel'><img class='rel' src='https://img.pokemondb.net/sprites/diamond-pearl/normal/" + data["slot"+i]["jae"] + ".png' width=128>";
+                if (data["slot"+i]["name"].length <= 12) {
                     nslot += "<div align=center valign=center id=pokename>" + data["slot"+i]["name"] + "</div>";
                 } else {
                     nslot += "<div align=center valign=center id=pokenamelong>" + data["slot"+i]["name"] + "</div>";
                 }
-                mslot += "<img src='https://img.pokemondb.net/sprites/diamond-pearl/normal/" + data["slot"+i]["mew"] + ".png' width=128>";
+                mslot += "<div class='rel'><img class='rel' src='https://img.pokemondb.net/sprites/diamond-pearl/normal/" + data["slot"+i]["mew"] + ".png' width=128>";
             }
+            if (data["slot"+i]["jaeitem"] == 1)
+                jslot += "<img src='icon_hi.png' class='ab1'>";
+            if (data["slot"+i]["jaetm"] == 1)
+                jslot += "<img src='icon_tm.png' class='ab1'>";
+            jslot += "</div>";
+            if (data["slot"+i]["mewitem"] == 1)
+                mslot += "<img src='icon_hi.png' class='ab1'>";
+            if (data["slot"+i]["mewtm"] == 1)
+                mslot += "<img src='icon_tm.png' class='ab1'>";
+            mewslot += "</div>";
+            
         }
         var jtd = document.getElementById("jaeslot");
         jtd.innerHTML = jslot;
