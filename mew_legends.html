@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113">
+  <style type="text/css">
+      body {
+          padding: 0px;
+          margin: 0px;
+          line-height: 0;
+      }
+      td {
+          width: 128px;
+          height: 128px;
+      }
+  </style>
+</head>
+<body>
+<table border=0 cellpadding=0 cellspacing=0>
+    <tr>
+        <td><img width='104' src='' id='slot1' name='slot1'></td>
+        <td><img width='104' src='' id='slot2' name='slot2'></td>
+        <td><img width='104' src='' id='slot3' name='slot3'></td>
+        <td><img width='104' src='' id='slot4' name='slot4'></td>
+        <td><img width='104' src='' id='slot5' name='slot5'></td>
+        <td><img width='104' src='' id='slot6' name='slot6'></td>
+    </tr>
+</table>
+
+<div id='fordebug'></div>
+<p>Type pokemon name and click update</p>
+1. <input type='text' id='pkmn1'></input><button id='update1'>update</button></input><br>
+2. <input type='text' id='pkmn2'></input><button id='update2'>update</button></input><br>
+3. <input type='text' id='pkmn3'></input><button id='update3'>update</button></input><br>
+4. <input type='text' id='pkmn4'></input><button id='update4'>update</button></input><br>
+5. <input type='text' id='pkmn5'></input><button id='update5'>update</button></input><br>
+6. <input type='text' id='pkmn6'></input><button id='update6'>update</button></input><br>
+<script type = "text/javascript">
+    
+    function updateImages(data) {
+        var slots = ['slot1','slot2','slot3','slot4','slot5','slot6']
+        for (const key of slots) {
+            var image =document.getElementById(key);
+            if (data[key] == '') {
+                image.src = 'blank.png';
+            } else {
+                image.src = "https://img.pokemondb.net/sprites/home/normal/" + data[key] + ".png";
+            }
+            
+        }
+    }
+    
+    
+</script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDQgEJzNZ48gpqzlzmPjm8IFaUVF8OxbIg",
+    authDomain: "pokemon-overlay.firebaseapp.com",
+    projectId: "pokemon-overlay",
+    storageBucket: "pokemon-overlay.appspot.com",
+    messagingSenderId: "717576650750",
+    appId: "1:717576650750:web:f4795a90336f1e5e004aaf",
+    measurementId: "G-N56N498XJL"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  
+  import { getDatabase, ref, onValue, update} from "https://www.gstatic.com/firebasejs/9.3.0/firebase-database.js";
+
+  const db = getDatabase();
+  const starCountRef = ref(db, '/pokemon/legends/mew');
+  onValue(starCountRef, (snapshot) => {
+    const data = snapshot.val();
+    updateImages(data);
+  });
+    
+    function updatePokemon(evt) {
+        var i = evt.currentTarget.myParam;
+        var name = document.getElementById('pkmn'+i).value
+        const db = getDatabase();
+        const updates = {};
+        updates['/pokemon/legends/mew/slot'+i] = name.trim().toLowerCase();
+        return update(ref(db), updates);
+    }
+    
+    for (var i = 1;i < 7;i++) {
+        const elem = document.getElementById("update"+i);
+        elem.addEventListener("click",updatePokemon,false);
+        elem.myParam = i;
+    }
+    
+</script>
+</body>
+</html>
