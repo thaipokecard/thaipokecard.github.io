@@ -31,7 +31,7 @@
 </table>
 
 <div id='fordebug'></div>
-<p>Type pokemon name and click update. Remove Pokemon by writing nothing to that slot and click update</p>
+<p>Type pokemon name and click update. Remove Pokemon by writing nothing to that slot and click update. For Pokemon that has Hisuian form, add '-hisuian' at the end.</p>
 1. <input type='text' id='pkmn1'></input><button id='update1'>update</button></input><br>
 2. <input type='text' id='pkmn2'></input><button id='update2'>update</button></input><br>
 3. <input type='text' id='pkmn3'></input><button id='update3'>update</button></input><br>
@@ -47,7 +47,7 @@
             if (data[key] == '') {
                 image.src = 'blank.png';
             } else {
-                image.src = "https://img.pokemondb.net/sprites/home/normal/" + data[key] + ".png";
+                image.src = "https://img.pokemondb.net/sprites/legends-arceus/normal/" + data[key] + ".png";
             }
             
         }
