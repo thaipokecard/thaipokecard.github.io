@@ -47,7 +47,11 @@
             if (data[key] == '') {
                 image.src = 'blank.png';
             } else {
-                image.src = "https://img.pokemondb.net/sprites/legends-arceus/normal/" + data[key] + ".png";
+                if(data[key].slice(0,5) == 'shiny') {
+                    image.src = "https://img.pokemondb.net/sprites/legends-arceus/shiny/" + data[key].slice(6) + ".png";
+                } else {
+                    image.src = "https://img.pokemondb.net/sprites/legends-arceus/normal/" + data[key] + ".png";
+                }
             }
             
         }
