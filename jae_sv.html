@@ -65,6 +65,7 @@ Slot 9: <img src="" id="mini9"><input type="file" id="file9"><button type="butto
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-analytics.js";
     import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-storage.js";
+    import { getDatabase, ref as dbref, onValue, update} from "https://www.gstatic.com/firebasejs/9.3.0/firebase-database.js";
 
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
@@ -88,23 +89,33 @@ Slot 9: <img src="" id="mini9"><input type="file" id="file9"><button type="butto
     // Create a root reference
     const storage = getStorage(app);
 
-    for (var i = 0;i < 10;i++) {
-        const elem = document.getElementById("upload"+i);
-        elem.addEventListener("click",uploadImage,false);
-        elem.myParam = i;
+    const db = getDatabase();
+    const starCountRef = dbref(db,'/pokemon/sv/jae');
+    onValue(starCountRef, (snapshot) => {
+        refresh();
+    });
 
-        const imgRef = ref(storage,"upload"+i+".png");
-        const img = document.getElementById("slot"+i);
-        const img2 = document.getElementById("mini"+i);
-        getDownloadURL(imgRef).then((url) => {
-            img.src = url;
-            img2.src = url;
-        }).catch((error) => {
-            img.src = "blank.png";
-            img2.src = "blank.png";
-        });
-        
+    function refresh () {
+        for (var i = 0;i < 10;i++) {
+            const elem = document.getElementById("upload"+i);
+            elem.addEventListener("click",uploadImage,false);
+            elem.myParam = i;
+
+            const imgRef = ref(storage,"upload"+i+".png");
+            const img = document.getElementById("slot"+i);
+            const img2 = document.getElementById("mini"+i);
+            getDownloadURL(imgRef).then((url) => {
+                img.src = url;
+                img2.src = url;
+            }).catch((error) => {
+                img.src = "blank.png";
+                img2.src = "blank.png";
+            });
+            
+        }
     }
+
+
     
     function uploadImage(evt) {
         var i = evt.currentTarget.myParam;
@@ -114,17 +125,12 @@ Slot 9: <img src="" id="mini9"><input type="file" id="file9"><button type="butto
         const img2 = document.getElementById("mini"+i);
         if (file === undefined) {
             deleteObject(storageRef);
-            img.src = "blank.png";
-            img2.src = "blank.png";
         } else {
             uploadBytes(storageRef, file).then((snapshot) => {
-                getDownloadURL(storageRef).then((url) => {
-                    img.src = url;
-                    img2.src = url;
-                }).catch((error) => {
-                    img.src = "blank.png";
-                    img2.src = "blank.png";
-                });
+                refresh();
+                const updates = {};
+                updates['/pokemon/sv/jae'] = 10;
+                return update(dbref(db), updates);
             });
         }
         document.getElementById("file"+i).value = "";
