@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113">
+  <link rel="preconnect" href="https://fonts.googleapis.com"> 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;600&family=Yanone+Kaffeesatz:wght@600&display=swap" rel="stylesheet">
+  <style type="text/css">
+      body {
+          padding: 0px;
+          margin: 0px;
+      }
+      td {
+        font-family: 'Teko', sans-serif;
+        font-family: 'Yanone Kaffeesatz', sans-serif;
+        font-size: x-large;
+        color: yellow;
+        text-align: center;
+        vertical-align: text-top;
+      }
+      #slot0,#slot1,#slot2,#slot3,#slot4,#slot5,#slot6,#slot7,#slot8,#slot9 {
+        width: 192px;
+      }
+      #mini0,#mini1,#mini2,#mini3,#mini4,#mini5,#mini6,#mini7,#mini8,#mini9 {
+        width: 48px;
+      }
+  </style>
+</head>
+<body>
+<table border=0 cellpadding=0 cellspacing=0>
+    <tr>
+        <td><img src='' id='slot0' name='slot0'></td>
+        <td><img src='' id='slot1' name='slot1'></td>
+        <td><img src='' id='slot2' name='slot2'></td>
+        <td><img src='' id='slot3' name='slot3'></td>
+        <td><img src='' id='slot4' name='slot4'></td>
+        <td><img src='' id='slot5' name='slot5'></td>
+        <td><img src='' id='slot6' name='slot6'></td>
+        <td><img src='' id='slot7' name='slot7'></td>
+        <td><img src='' id='slot8' name='slot8'></td>
+        <td><img src='' id='slot9' name='slot9'></td>
+    </tr>
+</table>
+
+<div id='fordebug'></div>
+<p>Instruction: Choose file and upload. (Take few seconds) Upload without choosing a file will delete that file</p>
+Slot 0: <img src="" id="mini0"><input type="file" id="file0"><button type="button" id="upload0">Upload Image</button><br>
+Slot 1: <img src="" id="mini1"><input type="file" id="file1"><button type="button" id="upload1">Upload Image</button><br>
+Slot 2: <img src="" id="mini2"><input type="file" id="file2"><button type="button" id="upload2">Upload Image</button><br>
+Slot 3: <img src="" id="mini3"><input type="file" id="file3"><button type="button" id="upload3">Upload Image</button><br>
+Slot 4: <img src="" id="mini4"><input type="file" id="file4"><button type="button" id="upload4">Upload Image</button><br>
+Slot 5: <img src="" id="mini5"><input type="file" id="file5"><button type="button" id="upload5">Upload Image</button><br>
+Slot 6: <img src="" id="mini6"><input type="file" id="file6"><button type="button" id="upload6">Upload Image</button><br>
+Slot 7: <img src="" id="mini7"><input type="file" id="file7"><button type="button" id="upload7">Upload Image</button><br>
+Slot 8: <img src="" id="mini8"><input type="file" id="file8"><button type="button" id="upload8">Upload Image</button><br>
+Slot 9: <img src="" id="mini9"><input type="file" id="file9"><button type="button" id="upload9">Upload Image</button><br>
+
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-analytics.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-storage.js";
+
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyDQgEJzNZ48gpqzlzmPjm8IFaUVF8OxbIg",
+        authDomain: "pokemon-overlay.firebaseapp.com",
+        projectId: "pokemon-overlay",
+        storageBucket: "pokemon-overlay.appspot.com",
+        messagingSenderId: "717576650750",
+        appId: "1:717576650750:web:f4795a90336f1e5e004aaf",
+        measurementId: "G-N56N498XJL"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    // Create a root reference
+    const storage = getStorage(app);
+
+    for (var i = 0;i < 10;i++) {
+        const elem = document.getElementById("upload"+i);
+        elem.addEventListener("click",uploadImage,false);
+        elem.myParam = i;
+
+        const imgRef = ref(storage,"upload"+i+".png");
+        const img = document.getElementById("slot"+i);
+        const img2 = document.getElementById("mini"+i);
+        getDownloadURL(imgRef).then((url) => {
+            img.src = url;
+            img2.src = url;
+        }).catch((error) => {
+            img.src = "blank.png";
+            img2.src = "blank.png";
+        });
+        
+    }
+    
+    function uploadImage(evt) {
+        var i = evt.currentTarget.myParam;
+        var file = document.getElementById("file"+i).files[0];
+        const storageRef = ref(storage, "upload" + i + ".png")
+        const img = document.getElementById("slot"+i);
+        const img2 = document.getElementById("mini"+i);
+        if (file === undefined) {
+            deleteObject(storageRef);
+            img.src = "blank.png";
+            img2.src = "blank.png";
+        } else {
+            uploadBytes(storageRef, file).then((snapshot) => {
+                getDownloadURL(storageRef).then((url) => {
+                    img.src = url;
+                    img2.src = url;
+                }).catch((error) => {
+                    img.src = "blank.png";
+                    img2.src = "blank.png";
+                });
+            });
+        }
+        document.getElementById("file"+i).value = "";
+    }
+    
+</script>
+</body>
+</html>
