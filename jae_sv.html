@@ -25,7 +25,7 @@
       #slot0,#slot1,#slot2,#slot3,#slot4,#slot5,#slot6,#slot7,#slot8,#slot9 {
         width: 192px;
       }
-      #mini0,#mini1,#mini2,#mini3,#mini4,#mini5,#mini6,#mini7,#mini8,#mini9 {
+      #mini0,#mini1,#mini2,#mini3,#mini4,#mini5,#mini6,#mini7,#mini8,#mini9,#mini10,#mini11,#mini12,#mini13,#mini14,#mini15,#mini16,#mini17,#mini18,#mini19 {
         width: 48px;
       }
   </style>
@@ -58,6 +58,16 @@ Slot 6: <img src="" id="mini6"><input type="file" id="file6"><button type="butto
 Slot 7: <img src="" id="mini7"><input type="file" id="file7"><button type="button" id="upload7">Upload Image</button><br>
 Slot 8: <img src="" id="mini8"><input type="file" id="file8"><button type="button" id="upload8">Upload Image</button><br>
 Slot 9: <img src="" id="mini9"><input type="file" id="file9"><button type="button" id="upload9">Upload Image</button><br>
+Slot 10: <img src="" id="mini10"><input type="file" id="file10"><button type="button" id="upload10">Upload Image</button><br>
+Slot 11: <img src="" id="mini11"><input type="file" id="file11"><button type="button" id="upload11">Upload Image</button><br>
+Slot 12: <img src="" id="mini12"><input type="file" id="file12"><button type="button" id="upload12">Upload Image</button><br>
+Slot 13: <img src="" id="mini13"><input type="file" id="file13"><button type="button" id="upload13">Upload Image</button><br>
+Slot 14: <img src="" id="mini14"><input type="file" id="file14"><button type="button" id="upload14">Upload Image</button><br>
+Slot 15: <img src="" id="mini15"><input type="file" id="file15"><button type="button" id="upload15">Upload Image</button><br>
+Slot 16: <img src="" id="mini16"><input type="file" id="file16"><button type="button" id="upload16">Upload Image</button><br>
+Slot 17: <img src="" id="mini17"><input type="file" id="file17"><button type="button" id="upload17">Upload Image</button><br>
+Slot 18: <img src="" id="mini18"><input type="file" id="file18"><button type="button" id="upload18">Upload Image</button><br>
+Slot 19: <img src="" id="mini19"><input type="file" id="file19"><button type="button" id="upload19">Upload Image</button><br>
 
 
 <script type="module">
@@ -92,26 +102,42 @@ Slot 9: <img src="" id="mini9"><input type="file" id="file9"><button type="butto
     const db = getDatabase();
     const starCountRef = dbref(db,'/pokemon/sv/jae');
     onValue(starCountRef, (snapshot) => {
-        refresh();
+        const data = snapshot.val();
+        refresh(data);
     });
 
-    function refresh () {
-        for (var i = 0;i < 10;i++) {
-            const elem = document.getElementById("upload"+i);
-            elem.addEventListener("click",uploadImage,false);
-            elem.myParam = i;
+    for (var i = 0;i < 20;i++) {
+        const elem = document.getElementById("upload"+i);
+        elem.addEventListener("click",uploadImage,false);
+        elem.myParam = i;
+    }
 
-            const imgRef = ref(storage,"upload"+i+".png");
+    function refresh (last) {
+        for (var i = 0;i < 10;i++) {
+            var target = i;
+            if (last >= 10) {
+                target = last - 9 + i;
+            }
+            const imgRef = ref(storage,"upload"+target+".png");
             const img = document.getElementById("slot"+i);
             const img2 = document.getElementById("mini"+i);
             getDownloadURL(imgRef).then((url) => {
                 img.src = url;
-                img2.src = url;
             }).catch((error) => {
                 img.src = "blank.png";
-                img2.src = "blank.png";
             });
             
+        }
+
+        for (var i=0;i<20;i++) {
+            const imgRef = ref(storage,"upload"+i+".png");
+            const img2 = document.getElementById("mini"+i);
+            getDownloadURL(imgRef).then((url) => {
+                img2.src = url;
+            }).catch((error) => {
+                img2.src = "blank.png";
+                console.log("mini" + i);
+            });
         }
     }
 
@@ -124,12 +150,15 @@ Slot 9: <img src="" id="mini9"><input type="file" id="file9"><button type="butto
         const img = document.getElementById("slot"+i);
         const img2 = document.getElementById("mini"+i);
         if (file === undefined) {
-            deleteObject(storageRef);
+            deleteObject(storageRef).then((snapshot) => {
+                const updates = {};
+                updates['/pokemon/sv/jae'] = i-1;
+                return update(dbref(db), updates);
+            });
         } else {
             uploadBytes(storageRef, file).then((snapshot) => {
-                refresh();
                 const updates = {};
-                updates['/pokemon/sv/jae'] = 10;
+                updates['/pokemon/sv/jae'] = i;
                 return update(dbref(db), updates);
             });
         }
